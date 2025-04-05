@@ -2,12 +2,16 @@ import React, { useState, useEffect } from 'react';
 
 const CryptoList = () => {
     const [coins, setCoins] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         fetch("https://api.coincap.io/v2/assets")
             .then((response) => response.json())
             .then((json) => setCoins(json.data));
+        setLoading(false);
     }, []);
+
+    if (loading) return <p>Laden...</p>;
 
     return (
         <div>
