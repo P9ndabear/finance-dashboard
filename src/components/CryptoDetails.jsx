@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import PriceChart from './PriceChart';
 import '../styles/main.scss';
 
 const CryptoDetails = () => {
@@ -8,10 +9,10 @@ const CryptoDetails = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        fetch(`https://api.coincap.io/v2/assets/${id}`)
+        fetch(`https://api.coingecko.com/api/v3/coins/${id}`)
             .then((res) => res.json())
-            .then((json) => {
-                setCoin(json.data);
+            .then((data) => {
+                setCoin(data);
                 setLoading(false);
             });
     }, [id]);
@@ -22,12 +23,14 @@ const CryptoDetails = () => {
     return (
         <div className="crypto-details">
             <h2>Details voor {coin.name}</h2>
-            <p>Symbol: {coin.symbol}</p>
-            <p>Rank: {coin.rank}</p>
-            <p>Prijs (USD): ${parseFloat(coin.priceUsd).toFixed(2)}</p>
-            <p>Marktkapitalisatie: ${parseFloat(coin.marketCapUsd).toLocaleString()}</p>
-            <p>Volume (24u): ${parseFloat(coin.volumeUsd24Hr).toLocaleString()}</p>
-            <p>Verandering (24u): {parseFloat(coin.changePercent24Hr).toFixed(2)}%</p>
+            <p>Symbol: {coin.symbol.toUpperCase()}</p>
+            <p>Rank: {coin.market_cap_rank}</p>
+            <p>Prijs (USD): ${coin.market_data.current_price.usd.toFixed(2)}</p>
+            <p>Marktkapitalisatie: ${coin.market_data.market_cap.usd.toLocaleString()}</p>
+            <p>Volume (24u): ${coin.market_data.total_volume.usd.toLocaleString()}</p>
+            <p>Verandering (24u): {coin.market_data.price_change_percentage_24h.toFixed(2)}%</p>
+
+            <PriceChart coinData={coin} />
         </div>
     );
 };
