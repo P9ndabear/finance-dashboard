@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import '../styles/main.scss';
 
 const CryptoDetails = () => {
     const { id } = useParams();
@@ -19,7 +20,7 @@ const CryptoDetails = () => {
     if (!coin) return <p>Geen data gevonden.</p>;
 
     return (
-        <div>
+        <div className="crypto-details">
             <h2>Details voor {coin.name}</h2>
             <p>Symbol: {coin.symbol}</p>
             <p>Rank: {coin.rank}</p>
