@@ -16,8 +16,8 @@ const PriceChart = ({ coinData }) => {
         datasets: [
             {
                 data: [marketCap, volume, price],
-                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
-                hoverBackgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
+                backgroundColor: ['Red', 'Blue', 'Yellow'],
+                hoverBackgroundColor: ['Red', 'Blue', 'Yellow'],
             },
         ],
     };

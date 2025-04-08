@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import SearchBar from './SearchBar';
 import Favorite from './Favorite';
+import axios from 'axios';
 import '../styles/main.scss';
 
 const CryptoList = () => {
@@ -20,11 +21,14 @@ const CryptoList = () => {
     }, []);
 
     useEffect(() => {
-        fetch("https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd")
-            .then((response) => response.json())
-            .then((data) => {
-                setCoins(data);
-                setFilteredCoins(data);
+        axios.get("https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1")
+            .then((response) => {
+                setCoins(response.data);
+                setFilteredCoins(response.data);
+                setLoading(false);
+            })
+            .catch((error) => {
+                console.error("Er is een fout opgetreden bij het ophalen van de data:", error);
                 setLoading(false);
             });
     }, []);
@@ -85,7 +89,7 @@ const CryptoList = () => {
                 />
             </div>
             <ul>
-                {filteredCoins.map((coin) => {
+                {filteredCoins.slice(0, 100).map((coin) => {
                     const isFavorite = favoriteCoins.some(fav => fav.id === coin.id);
                     return (
                         <li

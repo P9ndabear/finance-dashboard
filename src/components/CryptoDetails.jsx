@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import PriceChart from './PriceChart';
+import axios from 'axios';
 import '../styles/main.scss';
 
 const CryptoDetails = () => {
@@ -9,10 +10,13 @@ const CryptoDetails = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        fetch(`https://api.coingecko.com/api/v3/coins/${id}`)
-            .then((res) => res.json())
-            .then((data) => {
-                setCoin(data);
+        axios.get(`https://api.coingecko.com/api/v3/coins/${id}`)
+            .then((response) => {
+                setCoin(response.data);
+                setLoading(false);
+            })
+            .catch((error) => {
+                console.error("Er is een fout opgetreden bij het ophalen van de data:", error);
                 setLoading(false);
             });
     }, [id]);
